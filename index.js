@@ -7,6 +7,8 @@ const e = require("cors");
 const PORT = process.env.PORT;
 const DB_URL = process.env.DB_URL;
 const BASE_URL = process.env.BASE_URL;
+const UserRouter = require("./routers/user.router");
+const PostRouter = require("./routers/post.router");
 
 const app = express();
 app.use(express.json());
@@ -33,7 +35,10 @@ if (!DB_URL) {
       console.error("MongDB connection error:", error);
     });
 }
-
+// User Route
+app.use("/api/v1/users", UserRouter);
+// Post Route
+app.use("/api/v1/posts", PostRouter);
 app.listen(PORT, () => {
   console.log("server running on port http://localhost:" + PORT);
 });

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
 const PostSchema = new Schema({
-  id: { type: String, required: true, unique: true },
+  // id: { type: String, required: true, unique: true },
   title: { type: String, required: true },
   summary: { type: String, required: true, min: 10, max: 600 },
   content: { type: String, required: true },
