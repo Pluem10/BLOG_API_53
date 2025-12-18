@@ -3,10 +3,8 @@ const mongoose = require("mongoose");
 
 // Create a new post สร้างโพสต์ใหม่
 exports.createPost = async (req, res) => {
-  const { title, summary, content, cover } = req.body;
-  const authorId = req.authorId;
-
-  if (!title || !summary || !content || !cover || !authorId) {
+  const { title, summary, content, cover, author } = req.body;
+  if (!title || !summary || !content || !cover || !author) {
     return res.status(400).send({ message: "กรุณากรอกข้อมูลให้ครบถ้วน" });
   }
   try {
@@ -36,9 +34,7 @@ exports.createPost = async (req, res) => {
   }
 };
 
-exports.getAllPosts = async (req, res) => {
-  
-};
+exports.getAllPosts = async (req, res) => {};
 
 exports.getById = async (req, res) => {
   const { id } = req.params;
@@ -86,7 +82,6 @@ exports.upDatePost = async (req, res) => {
     return res.status(400).send({ message: "กรุณาใส่ ID ของโพสต์" });
   }
   const { title, summary, content, cover } = req.body;
-
   const authorId = req.authorId;
   if (!title || !summary || !content || !cover) {
     return res.status(400).send({ message: "กรุณากรอกข้อมูลให้ครบถ้วน" });
@@ -109,16 +104,17 @@ exports.upDatePost = async (req, res) => {
       },
       { new: true }
     );
-    if (!newPost) {
-      return res.status(404).send({ message: "ไม่พบโพสต์ที่จะอัปเดต" });
+      if (!newPost) {
+        return res.status(404).send({ message: "ไม่พบโพสต์ที่จะอัปเดต" });
+      }
+      res.send({ message: "อัปเดตโพสต์สำเร็จ" });
     }
-    res.send({ message: "อัปเดตโพสต์สำเร็จ" });
-  } catch (error) {
+  };
+  catch (error) {
     return res.status(500).send({
       message: error.message || "เกิดข้อผิดพลาดในการอัปเดตโพสต์",
     });
-  }
-};
+    }
 
 exports.deletePost = async (req, res) => {
   const { id } = req.params;
@@ -127,10 +123,7 @@ exports.deletePost = async (req, res) => {
     return res.status(400).send({ message: "กรุณาใส่ ID ของโพสต์" });
   }
   try {
-    const postDoc = await PostModel.findOneAndDelete({
-      _id: id,
-      author: authorId,
-    });
+    const postDoc = await PostModel.findOneAndDelete({ _id: id, author: authorId });
     if (!postDoc) {
       return res.status(500).send({ message: "ไม่สามารถลบโพสต์ได้" });
     }
